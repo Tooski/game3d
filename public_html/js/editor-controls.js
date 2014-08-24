@@ -7,9 +7,8 @@ THREE.PointerLockControls = function(camera) {
     var scope = this;
     camera.rotation.set(0, 0, 0);
     var pitchObject = new THREE.Object3D();
-    pitchObject.add(camera);
     var yawObject = new THREE.Object3D();
-    yawObject.position.y = 10;
+    pitchObject.add(camera);
     yawObject.add(pitchObject);
     var prevTime = performance.now();
     var velocity = new THREE.Vector3();
@@ -59,7 +58,7 @@ THREE.PointerLockControls = function(camera) {
                     binds[bind].isDown = false;
                 });
             }
-            return function() {
+            return function(delta) {
                 var keys = KeyboardJS.activeKeys();
                 for (var key in keys) {
                     if (binds[keys[key]]) {
@@ -72,38 +71,46 @@ THREE.PointerLockControls = function(camera) {
 
     // Mouse Listeners //
     {
-        var onMouseMove = function(event) {
-            var movementX = event.movementX || event.mozMovementX || event.webkitMovementX || 0;
-            var movementY = event.movementY || event.mozMovementY || event.webkitMovementY || 0;
-            if (event.button === 2) {
-                if (scope.enabled === false)
-                    return;
-                yawObject.rotation.y -= movementX * 0.002;
-                pitchObject.rotation.x -= movementY * 0.002;
-                pitchObject.rotation.x = Math.max(-PI_2, Math.min(PI_2, pitchObject.rotation.x));
-            } else if (event.button === 1) {
-                var position = pitchObject.quaternion._x * f;
-                yawObject.translateX(-movementX);
-                yawObject.translateY(movementY * (1 - Math.abs(position)));
-                yawObject.translateZ(movementY * position);
+        var mousebinds = (function() {
+            var onMouseMove = function(event) {
+                var movementX = event.movementX || event.mozMovementX || event.webkitMovementX || 0;
+                var movementY = event.movementY || event.mozMovementY || event.webkitMovementY || 0;
+                if (event.button === 2) {
+                    if (scope.enabled === false)
+                        return;
+                    yawObject.rotation.y -= movementX * 0.002;
+                    pitchObject.rotation.x -= movementY * 0.002;
+                    pitchObject.rotation.x = Math.max(-PI_2, Math.min(PI_2, pitchObject.rotation.x));
+                } else if (event.button === 1) {
+                    var position = pitchObject.quaternion._x * f;
+                    yawObject.translateX(-movementX);
+                    yawObject.translateY(movementY * (1 - Math.abs(position)));
+                    yawObject.translateZ(movementY * position);
+                }
+            };
+            var onMouseWheel = function(e) {
+                var e = window.event || e;
+                var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+                camera.position.z -= (delta * speed / 2);
+                return false;
+            };
+            document.addEventListener('mousemove', onMouseMove, false);
+            if (document.addEventListener) {
+                document.addEventListener("mousewheel", onMouseWheel, false);
+                document.addEventListener("DOMMouseScroll", onMouseWheel, false);
+            } else {
+                document.attachEvent("onmousewheel", onMouseWheel);
             }
-        };
-        var onMouseWheel = function(e) {
-            var e = window.event || e;
-            var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
-            camera.position.z -= (delta * speed / 2);
-            return false;
-        };
 
-
-
-        document.addEventListener('mousemove', onMouseMove, false);
-        if (document.addEventListener) {
-            document.addEventListener("mousewheel", onMouseWheel, false);
-            document.addEventListener("DOMMouseScroll", onMouseWheel, false);
-        } else {
-            document.attachEvent("onmousewheel", onMouseWheel);
-        }
+            return function(delta) {
+                velocity.x -= velocity.x * 10.0 * delta;
+                velocity.z -= velocity.z * 10.0 * delta;
+                velocity.y -= velocity.y * 10.0 * delta;
+                yawObject.translateX(velocity.x * delta);
+                yawObject.translateY(velocity.y * delta);
+                yawObject.translateZ(velocity.z * delta);
+            };
+        })();
     }
 
 
@@ -125,13 +132,8 @@ THREE.PointerLockControls = function(camera) {
     this.update = function() {
         var time = performance.now();
         var delta = (time - prevTime) / 1000;
-        velocity.x -= velocity.x * 10.0 * delta;
-        velocity.z -= velocity.z * 10.0 * delta;
-        velocity.y -= velocity.y * 10.0 * delta;
-        yawObject.translateX(velocity.x * delta);
-        yawObject.translateY(velocity.y * delta);
-        yawObject.translateZ(velocity.z * delta);
-        keybinds();
+        keybinds(delta);
+        mousebinds(delta);
         prevTime = time;
     };
 };

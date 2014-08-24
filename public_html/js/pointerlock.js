@@ -19,7 +19,7 @@ if (havePointerLock) {
     document.addEventListener('mozpointerlockchange', pointerlockchange, false);
     document.addEventListener('webkitpointerlockchange', pointerlockchange, false);
     document.addEventListener('mousedown', function(event) {
-        if (event.button === 2 || event.button === 1) {   // Right click triggers this.d
+        if (event.button !== 0) {   // Right click triggers this.d
             // Ask the browser to lock the pointer
             element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
             if (/Firefox/i.test(navigator.userAgent)) {
@@ -40,9 +40,11 @@ if (havePointerLock) {
         }
     }, false);
     document.addEventListener('mouseup', function(event) {
-        document.exitPointerLock = document.exitPointerLock ||
-                document.mozExitPointerLock ||
-                document.webkitExitPointerLock;
-        document.exitPointerLock();
+        if (event.button !== 0) {   // Right click triggers this.d
+            document.exitPointerLock = document.exitPointerLock ||
+                    document.mozExitPointerLock ||
+                    document.webkitExitPointerLock;
+            document.exitPointerLock();
+        }
     });
 }
