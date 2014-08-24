@@ -2,14 +2,34 @@
     <head>
         <title>game</title>
         <link rel="stylesheet" type="text/css" href="css/game.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <script src="lib/keyboard.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/threejs/r67/three.min.js"></script>
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+       
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular-route.min.js"></script>
+        <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script src="http://methvin.com/splitter/splitter.js"></script>
+         <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
         <script src="lib/Stats.js"></script>
+        <script src="lib/OBJLoader.js"></script>
+        <script src="lib/PointerLockSControls.js"></script>
+        <script src="js/gui.js"></script>
 
     </head>
     <body>
-        <script src="js/game.js"></script>
-        <script src="js/gui.js"></script>
+        <div ng-app="editor" id="gui">
+            <nav></nav>
+<!--            <div id="center" class="simple">  
+            <hierarchy></hierarchy>
+            </div>-->
+          
+        </div>
         <div id="bottom">what</div>
+
+                <script src="js/engine.js"></script>
+                <script src="js/gui.js"></script>
+                <script src="js/pointerlock.js"></script>
+
     </body>
 </html>

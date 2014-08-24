@@ -1,0 +1,6 @@
+<div ng-controller="NavCtrl" id="nav">
+ 
+    <div class="btn-group">
+        <button ng-repeat="value in navButtons" class="btn  btn-success" type="button" ng-model="radio.model" btn-radio="{{$index}}">{{value.name}}</button>
+    </div>
+</div>
