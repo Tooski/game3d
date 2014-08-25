@@ -133,9 +133,7 @@ THREE.OBJLoader.prototype = {
 			var object = splitData[ i ];
 
 			var geometry = new THREE.Geometry();
-                        console.log(geometry);
 			geometry.vertices = vertices;
-			console.log(geometry);
 			// f vertex vertex vertex ...
 
 			pattern = /f( +[\d]+)( [\d]+)( [\d]+)( [\d]+)?/g;

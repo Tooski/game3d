@@ -72,21 +72,38 @@ THREE.PointerLockControls = function(camera) {
     // Mouse Listeners //
     {
         var mousebinds = (function() {
+            var prevX = undefined, prevY = undefined, currX, currY;
+
             var onMouseMove = function(event) {
-                var movementX = event.movementX || event.mozMovementX || event.webkitMovementX || 0;
-                var movementY = event.movementY || event.mozMovementY || event.webkitMovementY || 0;
+
+                if (event) {
+                    if (prevX === undefined && prevY === undefined) {
+                        prevX = event.clientX, prevY = event.clientY;
+                    }
+                    currX = event.x;
+                    currY = event.y;
+                }
+                console.log(event);
+                //   
+                var movementX = event.movementX || event.mozMovementX || event.webkitMovementX || (currX - prevX) * 2 || 0;
+                var movementY = event.movementY || event.mozMovementY || event.webkitMovementY || (currY - prevY) * 2 || 0;
+
+
+
                 if (event.button === 2) {
-                    if (scope.enabled === false)
-                        return;
+
                     yawObject.rotation.y -= movementX * 0.002;
                     pitchObject.rotation.x -= movementY * 0.002;
                     pitchObject.rotation.x = Math.max(-PI_2, Math.min(PI_2, pitchObject.rotation.x));
+
                 } else if (event.button === 1) {
+
                     var position = pitchObject.quaternion._x * f;
                     yawObject.translateX(-movementX);
                     yawObject.translateY(movementY * (1 - Math.abs(position)));
                     yawObject.translateZ(movementY * position);
                 }
+                prevX = currX, prevY = currY;
             };
             var onMouseWheel = function(e) {
                 var e = window.event || e;
@@ -103,6 +120,8 @@ THREE.PointerLockControls = function(camera) {
             }
 
             return function(delta) {
+
+
                 velocity.x -= velocity.x * 10.0 * delta;
                 velocity.z -= velocity.z * 10.0 * delta;
                 velocity.y -= velocity.y * 10.0 * delta;

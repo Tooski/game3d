@@ -84,7 +84,7 @@ function init() {
     //
     
     renderer = new THREE.WebGLRenderer();
-    renderer.setSize(width-1, center.clientHeight-1);
+    renderer.setSize(width-20, center.clientHeight);
     console.log(renderer.domElement);
 
    //renderer.domElement.width = 1000;
@@ -112,7 +112,7 @@ function onWindowResize() {
     
     camera.aspect = width / center.clientHeight;
     camera.updateProjectionMatrix();
-    renderer.setSize(width-1, center.clientHeight-1);
+    renderer.setSize(width-4, center.clientHeight-4);
 }
 function animate() {
     requestAnimationFrame(animate);

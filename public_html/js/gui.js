@@ -24,6 +24,7 @@ app.controller('NavCtrl', function($scope) {
 
 
 app.directive("hierarchy", function() {
+    console.log("hi");
     return {
         restrict: 'E',
         templateUrl: 'partial/hierarchy.html'

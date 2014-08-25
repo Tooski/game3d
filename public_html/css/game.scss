@@ -65,10 +65,11 @@ canvas {
     width: 100%;
     @include calc( height, '100% - '+($bottombar + $topbar)+'px');
     #left {
-        width: $leftbar + px;
+        width: $leftbar +px;
         float:left;
         background-color: orange;
         height: 100%;
+        overflow: overlay;
     }
     #center {
         background-color: black;

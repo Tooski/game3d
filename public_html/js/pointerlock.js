@@ -2,6 +2,8 @@ var objects = [];
 var raycaster;
 // http://www.html5rocks.com/en/tutorials/pointerlock/intro/
 var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
+
+
 if (havePointerLock) {
 
     var element = document.body;
@@ -12,31 +14,15 @@ if (havePointerLock) {
             controls.enabled = false;
         }
     };
-    document.oncontextmenu = function(e) {
-        e.preventDefault();
-    };
+
     document.addEventListener('pointerlockchange', pointerlockchange, false);
     document.addEventListener('mozpointerlockchange', pointerlockchange, false);
     document.addEventListener('webkitpointerlockchange', pointerlockchange, false);
+
     document.addEventListener('mousedown', function(event) {
         if (event.button !== 0) {   // Right click triggers this.d
-            // Ask the browser to lock the pointer
             element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
-            if (/Firefox/i.test(navigator.userAgent)) {
-                var fullscreenchange = function(event) {
-                    if (document.fullscreenElement === element || document.mozFullscreenElement === element || document.mozFullScreenElement === element) {
-                        document.removeEventListener('fullscreenchange', fullscreenchange);
-                        document.removeEventListener('mozfullscreenchange', fullscreenchange);
-                        element.requestPointerLock();
-                    }
-                };
-                document.addEventListener('fullscreenchange', fullscreenchange, false);
-                document.addEventListener('mozfullscreenchange', fullscreenchange, false);
-                element.requestFullscreen = element.requestFullscreen || element.mozRequestFullscreen || element.mozRequestFullScreen || element.webkitRequestFullscreen;
-                element.requestFullscreen();
-            } else {
-                element.requestPointerLock();
-            }
+            element.requestPointerLock();
         }
     }, false);
     document.addEventListener('mouseup', function(event) {
@@ -48,3 +34,18 @@ if (havePointerLock) {
         }
     });
 }
+else
+{
+    document.addEventListener('mousedown', function(event) {
+       console.log(      controls.enabled = true) 
+    });
+    
+
+
+}       
+
+
+
+document.oncontextmenu = function(e) {
+        e.preventDefault();
+};

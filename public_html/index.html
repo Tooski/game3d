@@ -3,6 +3,7 @@
         <title>game</title>
         <link rel="stylesheet" type="text/css" href="css/game.css">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <script src="lib/performance.now()-polyfill.js"></script>
         <script src="lib/keyboard.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/threejs/r67/three.min.js"></script>
 
@@ -17,9 +18,9 @@
         <script src="js/gui.js"></script>
 
     </head>
-    <body>
+    <body ng-app="editor">
         <div id="gui"> 
-            <div ng-app="editor" >
+            <div  >
                 <nav></nav>
                 
                 <!--            <div id="center" class="simple">  
@@ -29,7 +30,7 @@
             </div>
         </div>
         <div id="middle">
-            <div id="left"><hierarchy></hierarchy></div>
+            <div id="left" ><hierarchy></hierarchy></div>
             <div id="center"></div>
         </div>
 

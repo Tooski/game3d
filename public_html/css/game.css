@@ -45,7 +45,8 @@ canvas {
     width: 150px;
     float: left;
     background-color: orange;
-    height: 100%; }
+    height: 100%;
+    overflow: overlay; }
   #middle #center {
     background-color: black;
     height: 100%; }
