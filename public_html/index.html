@@ -16,7 +16,7 @@
         <script src="lib/OBJLoader.js"></script>
         <script src="js/editor-controls.js"></script>
         <script src="js/gui.js"></script>
-
+        <script src="js/gameobject.js"></script>
     </head>
     <body ng-app="editor">
         <div id="gui"> 
@@ -30,7 +30,7 @@
             </div>
         </div>
         <div id="middle">
-            <div id="left" ><hierarchy></hierarchy></div>
+            <div id="left" ng-controller="HierarchyCtrl"><hierarchy></hierarchy></div>
             <div id="center"></div>
         </div>
 

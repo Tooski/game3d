@@ -83,8 +83,6 @@ THREE.PointerLockControls = function(camera) {
                     currX = event.x;
                     currY = event.y;
                 }
-                console.log(event);
-                //   
                 var movementX = event.movementX || event.mozMovementX || event.webkitMovementX || (currX - prevX) * 2 || 0;
                 var movementY = event.movementY || event.mozMovementY || event.webkitMovementY || (currY - prevY) * 2 || 0;
 

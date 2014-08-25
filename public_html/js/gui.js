@@ -24,13 +24,17 @@ app.controller('NavCtrl', function($scope) {
 
 
 app.directive("hierarchy", function() {
-    console.log("hi");
     return {
         restrict: 'E',
         templateUrl: 'partial/hierarchy.html'
     };
 });
 app.controller('HierarchyCtrl', function($scope) {
-    
+    $scope.gameObjects = engine.getGameObjects();
+    engine.addCallback({fn: ["addGameObject"], callback: function() { 
+            $scope.gameObjects = engine.getGameObjects();
+            console.log($scope.gameObjects);
+            $scope.$apply();
+        }});
 });
 
