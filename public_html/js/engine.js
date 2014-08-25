@@ -5,6 +5,8 @@ var geometry, material, mesh;
 var container, stats;
 
 var camera, scene, renderer;
+ var center;
+var neighbors = [];
 
 var mouseX = 0, mouseY = 0;
 
@@ -15,14 +17,18 @@ var windowHalfY = window.innerHeight / 2;
 init();
 animate();
 
-
 function init() {
 
-    container = document.createElement('div');
-    document.body.appendChild(container);
+//    container = document.createElement('div');
 
+    neighbors.push(document.getElementById('left'));
+    center = document.getElementById('center');
+     var width = center.clientWidth;
 
-    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
+    for(var n in neighbors) {
+        width -= neighbors[n].clientWidth;
+    }
+    camera = new THREE.PerspectiveCamera(45, width/ center.clientHeight, 1, 10000);
     camera.position.z = 100;
 
     // scene
@@ -76,11 +82,13 @@ function init() {
     });
 
     //
-
+    
     renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    container.appendChild(renderer.domElement);
+    renderer.setSize(width-1, center.clientHeight-1);
+    console.log(renderer.domElement);
 
+   //renderer.domElement.width = 1000;
+    center.appendChild(renderer.domElement);
 
 
 
@@ -95,9 +103,16 @@ var rotationX = 1.55,
 function onWindowResize() {
     windowHalfX = window.innerWidth / 2;
     windowHalfY = window.innerHeight / 2;
-    camera.aspect = window.innerWidth / window.innerHeight;
+    
+    var width = center.clientWidth;
+
+    for(var n in neighbors) {
+        width -= neighbors[n].clientWidth;
+    }
+    
+    camera.aspect = width / center.clientHeight;
     camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(width-1, center.clientHeight-1);
 }
 function animate() {
     requestAnimationFrame(animate);

@@ -5,12 +5,12 @@
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
         <script src="lib/keyboard.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/threejs/r67/three.min.js"></script>
-       
+
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular-route.min.js"></script>
         <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script src="http://methvin.com/splitter/splitter.js"></script>
-         <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
+        <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
         <script src="lib/Stats.js"></script>
         <script src="lib/OBJLoader.js"></script>
         <script src="js/editor-controls.js"></script>
@@ -18,18 +18,25 @@
 
     </head>
     <body>
-        <div ng-app="editor" id="gui">
-            <nav></nav>
-<!--            <div id="center" class="simple">  
-            <hierarchy></hierarchy>
-            </div>-->
-          
-        </div>
-        <div id="bottom">what</div>
+        <div id="gui"> 
+            <div ng-app="editor" >
+                <nav></nav>
+                
+                <!--            <div id="center" class="simple">  
+                           
+                            </div>-->
 
-                <script src="js/engine.js"></script>
-                <script src="js/gui.js"></script>
-                <script src="js/pointerlock.js"></script>
+            </div>
+        </div>
+        <div id="middle">
+            <div id="left"><hierarchy></hierarchy></div>
+            <div id="center"></div>
+        </div>
+
+        <div id="bottom">what</div>
+        <script src="js/engine.js"></script>
+        <script src="js/gui.js"></script>
+        <script src="js/pointerlock.js"></script>
 
     </body>
 </html>
