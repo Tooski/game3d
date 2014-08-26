@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/, Josef Nosov
  */
 
-THREE.PointerLockControls = function(camera) {
+THREE.PointerLockControls = function(camera, canvas) {
     var speed = 100;
     var scope = this;
     camera.rotation.set(0, 0, 0);
@@ -109,12 +109,12 @@ THREE.PointerLockControls = function(camera) {
                 camera.position.z -= (delta * speed / 2);
                 return false;
             };
-            document.addEventListener('mousemove', onMouseMove, false);
-            if (document.addEventListener) {
-                document.addEventListener("mousewheel", onMouseWheel, false);
-                document.addEventListener("DOMMouseScroll", onMouseWheel, false);
+            canvas.addEventListener('mousemove', onMouseMove, false);
+            if (canvas.addEventListener) {
+                canvas.addEventListener("mousewheel", onMouseWheel, false);
+                canvas.addEventListener("DOMMouseScroll", onMouseWheel, false);
             } else {
-                document.attachEvent("onmousewheel", onMouseWheel);
+                canvas.attachEvent("onmousewheel", onMouseWheel);
             }
 
             return function(delta) {

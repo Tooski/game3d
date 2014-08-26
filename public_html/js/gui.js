@@ -31,9 +31,9 @@ app.directive("hierarchy", function() {
 });
 app.controller('HierarchyCtrl', function($scope) {
     $scope.gameObjects = engine.getGameObjects();
-    engine.addCallback({fn: ["addGameObject"], callback: function() { 
+    engine.addCallback({fn: ["addGameObject", "addChild", "removeChild"], callback: function() { 
             $scope.gameObjects = engine.getGameObjects();
-            console.log($scope.gameObjects);
+            
             $scope.$apply();
         }});
 });

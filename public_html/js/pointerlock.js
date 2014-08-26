@@ -7,7 +7,7 @@
 
     if (havePointerLock) {
 
-        var element = document.body;
+        var element = engine.canvas;
         var pointerlockchange = function(event) {
             if (document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element) {
                 engine.controls().enabled = true;
@@ -19,14 +19,14 @@
         document.addEventListener('pointerlockchange', pointerlockchange, false);
         document.addEventListener('mozpointerlockchange', pointerlockchange, false);
         document.addEventListener('webkitpointerlockchange', pointerlockchange, false);
-
-        document.addEventListener('mousedown', function(event) {
+        
+        engine.canvas.addEventListener('mousedown', function(event) {
             if (event.button !== 0) {   // Right click triggers this.d
                 element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
                 element.requestPointerLock();
             }
         }, false);
-        document.addEventListener('mouseup', function(event) {
+        engine.canvas.addEventListener('mouseup', function(event) {
             if (event.button !== 0) {   // Right click triggers this.d
                 document.exitPointerLock = document.exitPointerLock ||
                         document.mozExitPointerLock ||
@@ -37,7 +37,7 @@
     }
     else
     {
-        document.addEventListener('mousedown', function(event) {
+        engine.canvas.addEventListener('mousedown', function(event) {
             engine.controls().enabled = true;
         });
 

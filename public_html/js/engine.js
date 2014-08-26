@@ -1,42 +1,5 @@
-function Observer() {
-    this.observers = {};
-    var that = this;
-    return {
-        /**
-         * Requires params fn which is a string of the function name and callback of the function.
-         * @param {type} cb
-         * @returns {undefined}
-         */
-        addCallback: function(cb) {
-            if (cb.callback) {
-                for (var name in cb.fn) {
-                    var fn = cb.fn[name].toLowerCase();
-                    if (!that.observers[fn]) {
-                        that.observers[fn] = [];
-                    }
-                    that.observers[fn].push(cb.callback);
-                }
-            }
-        },
-        triggerCallback: function(name) {
-            var fn = name.toLowerCase();
-            var o = that.observers[fn];
-            if (o) {
-                for (var cb in o) {
-                    o[cb]();
-                }
-            }
-        }
-    };
-}
-;
-
-
-
-
 
 function EditorEngine() {
-    var obs = new Observer();
     var mainCamera, scene, renderer, center, controls;
     var neighbors = [];
     var gameObjects = [];
@@ -72,11 +35,11 @@ function EditorEngine() {
         center.appendChild(renderer.domElement);
         window.addEventListener('resize', onWindowResize, false);
 
-        controls = new THREE.PointerLockControls(mainCamera);
+        controls = new THREE.PointerLockControls(mainCamera, renderer.domElement);
         scene.add(controls.getObject());
     }
 
-    function onWindowResize() {
+    function onWindowResize() { // TODO HACKY
         var width = center.clientWidth;
         for (var n in neighbors) {
             width -= neighbors[n].clientWidth;
@@ -97,16 +60,29 @@ function EditorEngine() {
     }
 
     return {
+        canvas: renderer.domElement,
         scene: function() {
             return scene;
         },
         controls: function() {
             return controls;
         },
-        addGameObject: function (object) {
-            if (object instanceof GameObject) {
+        addGameObject: function(object) {
+            var contains = containsInArray(gameObjects, object);
+            console.log(contains);
+            if (object.instanceOf && object.instanceOf(GameObject) && !contains) {
                 gameObjects.push(object);
-                obs.triggerCallback("addGameObject");
+                EditorEngine.prototype.triggerCallback("addGameObject");
+
+
+                object.addCallback([
+                    {fn: ['addChild'], callback: function() {
+                            EditorEngine.prototype.triggerCallback('addChild');
+                        }},
+                    {fn: ['removeChild'], callback: function() {
+                            EditorEngine.prototype.triggerCallback('removeChild');
+                        }}
+                ]);
                 return true;
             }
             return false;
@@ -115,13 +91,14 @@ function EditorEngine() {
             return gameObjects.slice();
         },
         addCallback: function(observer) {
-            obs.addCallback(observer);
+            EditorEngine.prototype.addCallback(observer);
         }
     };
 
 }
-;
 
+EditorEngine.prototype = new Observer();
+EditorEngine.prototype.constructor = EditorEngine;
 
 
 
@@ -130,13 +107,26 @@ var engine = new EditorEngine();
 
 
 
+function containsInArray(rootArray, searchFor, recurseOnFunction) {
+    if (rootArray && searchFor) {
+        var i = rootArray.length;
+        while (i--) {
+    
+            var item = rootArray[rootArray.length - i - 1];
+            if (item === searchFor) {
+                return true;
+            }
 
-
-
-
-
-
-
+            // Not tested.
+            if (recurseOnFunction) {
+                var fn = item[recurseOnFunction];
+                if (fn) {
+                    containsInArray(fn, searchFor, recurseOnFunction);
+                }
+            }
+        }
+    }
+}
 
 
 
